@@ -50,22 +50,8 @@
       border-radius: 5px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .at-bat {
-      margin-top: 20px;
-      background-color: #f1f1f1;
-      padding: 10px;
-      border-radius: 5px;
-    }
-    .at-bat label {
-      margin-right: 10px;
-    }
-    .at-bat input[type="number"] {
-      max-width: 80px;
-    }
-    @media (max-width: 600px) {
-      input[type="number"], input[type="text"], input[type="date"], select, button {
-        width: 100%;
-      }
+    .input-section {
+      margin-bottom: 20px;
     }
   </style>
 </head>
@@ -108,13 +94,13 @@
     <input type="number" id="sb" placeholder="請輸入盜壘成功次數">
     <label for="cs">盜壘失敗次數 (CS):</label>
     <input type="number" id="cs" placeholder="請輸入盜壘失敗次數">
-    
-    <div class="at-bat">
-      <h3>每個打席結果</h3>
+    <h3>打席結果</h3>
 
-      <!-- 第一打席 -->
-      <label for="atBat1">第一打席:</label>
+    <!-- 第一至第六打席結果 -->
+    <div class="input-section">
+      <label for="atBat1">第一打席結果:</label>
       <select id="atBat1">
+        <option value="無此打席">無此打席</option>
         <option value="一壘安打">一壘安打</option>
         <option value="二壘安打">二壘安打</option>
         <option value="三壘安打">三壘安打</option>
@@ -123,18 +109,17 @@
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
-        <option value="無此打席">無此打席</option>
       </select>
-      <label for="atBat1RBI">是否有打點:</label>
-      <input type="checkbox" id="atBat1RBI">
-      <input type="number" id="atBat1RBIValue" style="display:none;" placeholder="打點數">
-      <label for="atBat1SB">是否有盜壘:</label>
-      <input type="checkbox" id="atBat1SB">
-      <input type="number" id="atBat1SBValue" style="display:none;" placeholder="盜壘次數">
+      <label for="rbi1">打點:</label>
+      <input type="number" id="rbi1" placeholder="請輸入打點數">
+      <label for="sb1">盜壘:</label>
+      <input type="number" id="sb1" placeholder="請輸入盜壘次數">
+    </div>
 
-      <!-- 第二打席 -->
-      <label for="atBat2">第二打席:</label>
+    <div class="input-section">
+      <label for="atBat2">第二打席結果:</label>
       <select id="atBat2">
+        <option value="無此打席">無此打席</option>
         <option value="一壘安打">一壘安打</option>
         <option value="二壘安打">二壘安打</option>
         <option value="三壘安打">三壘安打</option>
@@ -143,18 +128,17 @@
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
-        <option value="無此打席">無此打席</option>
       </select>
-      <label for="atBat2RBI">是否有打點:</label>
-      <input type="checkbox" id="atBat2RBI">
-      <input type="number" id="atBat2RBIValue" style="display:none;" placeholder="打點數">
-      <label for="atBat2SB">是否有盜壘:</label>
-      <input type="checkbox" id="atBat2SB">
-      <input type="number" id="atBat2SBValue" style="display:none;" placeholder="盜壘次數">
+      <label for="rbi2">打點:</label>
+      <input type="number" id="rbi2" placeholder="請輸入打點數">
+      <label for="sb2">盜壘:</label>
+      <input type="number" id="sb2" placeholder="請輸入盜壘次數">
+    </div>
 
-      <!-- 第三打席 -->
-      <label for="atBat3">第三打席:</label>
+    <div class="input-section">
+      <label for="atBat3">第三打席結果:</label>
       <select id="atBat3">
+        <option value="無此打席">無此打席</option>
         <option value="一壘安打">一壘安打</option>
         <option value="二壘安打">二壘安打</option>
         <option value="三壘安打">三壘安打</option>
@@ -163,18 +147,17 @@
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
-        <option value="無此打席">無此打席</option>
       </select>
-      <label for="atBat3RBI">是否有打點:</label>
-      <input type="checkbox" id="atBat3RBI">
-      <input type="number" id="atBat3RBIValue" style="display:none;" placeholder="打點數">
-      <label for="atBat3SB">是否有盜壘:</label>
-      <input type="checkbox" id="atBat3SB">
-      <input type="number" id="atBat3SBValue" style="display:none;" placeholder="盜壘次數">
+      <label for="rbi3">打點:</label>
+      <input type="number" id="rbi3" placeholder="請輸入打點數">
+      <label for="sb3">盜壘:</label>
+      <input type="number" id="sb3" placeholder="請輸入盜壘次數">
+    </div>
 
-      <!-- 第四打席 -->
-      <label for="atBat4">第四打席:</label>
+    <div class="input-section">
+      <label for="atBat4">第四打席結果:</label>
       <select id="atBat4">
+        <option value="無此打席">無此打席</option>
         <option value="一壘安打">一壘安打</option>
         <option value="二壘安打">二壘安打</option>
         <option value="三壘安打">三壘安打</option>
@@ -183,18 +166,17 @@
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
-        <option value="無此打席">無此打席</option>
       </select>
-      <label for="atBat4RBI">是否有打點:</label>
-      <input type="checkbox" id="atBat4RBI">
-      <input type="number" id="atBat4RBIValue" style="display:none;" placeholder="打點數">
-      <label for="atBat4SB">是否有盜壘:</label>
-      <input type="checkbox" id="atBat4SB">
-      <input type="number" id="atBat4SBValue" style="display:none;" placeholder="盜壘次數">
+      <label for="rbi4">打點:</label>
+      <input type="number" id="rbi4" placeholder="請輸入打點數">
+      <label for="sb4">盜壘:</label>
+      <input type="number" id="sb4" placeholder="請輸入盜壘次數">
+    </div>
 
-      <!-- 第五打席 -->
-      <label for="atBat5">第五打席:</label>
+    <div class="input-section">
+      <label for="atBat5">第五打席結果:</label>
       <select id="atBat5">
+        <option value="無此打席">無此打席</option>
         <option value="一壘安打">一壘安打</option>
         <option value="二壘安打">二壘安打</option>
         <option value="三壘安打">三壘安打</option>
@@ -203,18 +185,17 @@
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
-        <option value="無此打席">無此打席</option>
       </select>
-      <label for="atBat5RBI">是否有打點:</label>
-      <input type="checkbox" id="atBat5RBI">
-      <input type="number" id="atBat5RBIValue" style="display:none;" placeholder="打點數">
-      <label for="atBat5SB">是否有盜壘:</label>
-      <input type="checkbox" id="atBat5SB">
-      <input type="number" id="atBat5SBValue" style="display:none;" placeholder="盜壘次數">
+      <label for="rbi5">打點:</label>
+      <input type="number" id="rbi5" placeholder="請輸入打點數">
+      <label for="sb5">盜壘:</label>
+      <input type="number" id="sb5" placeholder="請輸入盜壘次數">
+    </div>
 
-      <!-- 第六打席 -->
-      <label for="atBat6">第六打席:</label>
+    <div class="input-section">
+      <label for="atBat6">第六打席結果:</label>
       <select id="atBat6">
+        <option value="無此打席">無此打席</option>
         <option value="一壘安打">一壘安打</option>
         <option value="二壘安打">二壘安打</option>
         <option value="三壘安打">三壘安打</option>
@@ -223,42 +204,21 @@
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
-        <option value="無此打席">無此打席</option>
       </select>
-      <label for="atBat6RBI">是否有打點:</label>
-      <input type="checkbox" id="atBat6RBI">
-      <input type="number" id="atBat6RBIValue" style="display:none;" placeholder="打點數">
-      <label for="atBat6SB">是否有盜壘:</label>
-      <input type="checkbox" id="atBat6SB">
-      <input type="number" id="atBat6SBValue" style="display:none;" placeholder="盜壘次數">
+      <label for="rbi6">打點:</label>
+      <input type="number" id="rbi6" placeholder="請輸入打點數">
+      <label for="sb6">盜壘:</label>
+      <input type="number" id="sb6" placeholder="請輸入盜壘次數">
     </div>
 
     <button onclick="calculateStats()">計算統計</button>
-    <button onclick="clearFields()">清除</button>
-    <button onclick="saveAsJpg()">儲存成圖片 (JPG)</button>
-    <button onclick="saveAsTxt()">儲存成記事本 (TXT)</button>
-    <button onclick="saveAsExcel()">儲存成Excel (XLSX)</button>
   </div>
 
-  <div class="result-box">
-    <h3>結果</h3>
-    <div id="output"></div>
+  <div class="result-box" id="output">
+    <!-- 結果將顯示在這裡 -->
   </div>
 
   <script>
-    // 控制顯示打點數和盜壘數格子
-    document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-      checkbox.addEventListener('change', function() {
-        const valueInput = document.querySelector(`#${this.id}Value`);
-        if (this.checked) {
-          valueInput.style.display = 'inline';
-        } else {
-          valueInput.style.display = 'none';
-        }
-      });
-    });
-
-    // 計算統計功能
     function calculateStats() {
       const pa = parseInt(document.getElementById('pa').value) || 0;
       const ab = parseInt(document.getElementById('ab').value) || 0;
@@ -285,15 +245,31 @@
         document.getElementById('atBat6').value
       ];
 
+      const rb1 = parseInt(document.getElementById('rbi1').value) || 0;
+      const rb2 = parseInt(document.getElementById('rbi2').value) || 0;
+      const rb3 = parseInt(document.getElementById('rbi3').value) || 0;
+      const rb4 = parseInt(document.getElementById('rbi4').value) || 0;
+      const rb5 = parseInt(document.getElementById('rbi5').value) || 0;
+      const rb6 = parseInt(document.getElementById('rbi6').value) || 0;
+
+      const sb1 = parseInt(document.getElementById('sb1').value) || 0;
+      const sb2 = parseInt(document.getElementById('sb2').value) || 0;
+      const sb3 = parseInt(document.getElementById('sb3').value) || 0;
+      const sb4 = parseInt(document.getElementById('sb4').value) || 0;
+      const sb5 = parseInt(document.getElementById('sb5').value) || 0;
+      const sb6 = parseInt(document.getElementById('sb6').value) || 0;
+
       // 顯示每個打席的結果
       let atBatResults = '';
       for (let i = 0; i < atBats.length; i++) {
         atBatResults += `打席${i + 1}結果: ${atBats[i]}<br>`;
       }
 
+      // 計算正確的長打率
+      const slg = ((double + (triple * 2) + (hr * 3)) / ab).toFixed(3); // 修正長打率的計算，排除一壘安打
+
       const ba = (ab > 0) ? (h / ab).toFixed(3) : '0.000';
       const obp = ((h + bb + hbp) / (pa)).toFixed(3);
-      const slg = ((single + (double * 2) + (triple * 3) + (hr * 4)) / ab).toFixed(3);
 
       document.getElementById('output').innerHTML = `
         打擊率 (BA): ${ba}<br>
@@ -302,46 +278,10 @@
         盜壘成功率: ${(sb / (sb + cs) * 100).toFixed(2)}%<br>
         打點 (RBI): ${rbi}<br>
         失誤 (E): ${e}<br>
-        ${atBatResults}
+        ${atBatResults}<br>
+        打點總數: ${rb1 + rb2 + rb3 + rb4 + rb5 + rb6}<br>
+        盜壘總數: ${sb1 + sb2 + sb3 + sb4 + sb5 + sb6}
       `;
-    }
-
-    // 清除輸入框
-    function clearFields() {
-      document.querySelectorAll('input').forEach(input => input.value = '');
-      document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
-      document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
-    }
-
-    // 儲存為圖片
-    function saveAsJpg() {
-      html2canvas(document.querySelector(".result-box")).then(function(canvas) {
-        canvas.toBlob(function(blob) {
-          saveAs(blob, "result.jpg");
-        });
-      });
-    }
-
-    // 儲存為TXT
-    function saveAsTxt() {
-      const outputText = document.getElementById("output").innerText;
-      const blob = new Blob([outputText], { type: "text/plain" });
-      saveAs(blob, "result.txt");
-    }
-
-    // 儲存為Excel
-    function saveAsExcel() {
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.aoa_to_sheet([
-        ["姓名", "日期", "棒次", "打席數", "打數", "安打", "四壞球", "三振", "觸身球", "失誤", "打點", "1壘安打", "2壘安打", "3壘安打", "全壘打", "盜壘成功", "盜壘失敗"],
-        [document.getElementById('name').value, document.getElementById('date').value, document.getElementById('battingOrder').value,
-          document.getElementById('pa').value, document.getElementById('ab').value, document.getElementById('h').value, document.getElementById('bb').value,
-          document.getElementById('so').value, document.getElementById('hbp').value, document.getElementById('e').value,
-          document.getElementById('rbi').value, document.getElementById('single').value, document.getElementById('double').value,
-          document.getElementById('triple').value, document.getElementById('hr').value, document.getElementById('sb').value, document.getElementById('cs').value]
-      ]);
-      XLSX.utils.book_append_sheet(wb, ws, "打擊紀錄");
-      XLSX.writeFile(wb, "result.xlsx");
     }
   </script>
 </body>
