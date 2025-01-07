@@ -98,6 +98,8 @@
     <input type="number" id="cs" placeholder="請輸入盜壘失敗次數">
     <button onclick="calculateStats()">計算統計</button>
     <button onclick="clearFields()">清除輸入框</button>
+    <button onclick="saveAsJpg()">儲存成圖片 (JPG)</button>
+    <button onclick="saveAsTxt()">儲存成記事本 (TXT)</button>
     <button onclick="saveXlsx()">儲存為XLSX檔</button>
   </div>
   <div id="result" class="result-box">
@@ -134,7 +136,7 @@
       const sbPercent = sb + cs ? (sb / (sb + cs)).toFixed(3) : "0.000";
       const slg = ab ? ((single + 2 * double + 3 * triple + 4 * hr) / ab).toFixed(3) : "0.000";
 
-      document.getElementById('resultContent').innerHTML = `
+      document.getElementById('resultContent').innerHTML = ` 
         日期: ${date}<br>
         姓名: ${name}<br>
         棒次: ${battingOrder}<br>
@@ -146,6 +148,24 @@
       `;
 
       existingData.push([date, name, battingOrder, position, pa, ab, h, bb, so, hbp, e, rbi, single, double, triple, hr, sb, cs, ba, obp, sbPercent, slg]);
+    }
+
+    function saveAsJpg() {
+      const resultDiv = document.getElementById("result");
+      html2canvas(resultDiv).then(canvas => {
+        canvas.toBlob(blob => {
+          saveAs(blob, "棒球打擊紀錄.jpg");
+        });
+      });
+    }
+
+    function saveAsTxt() {
+      let content = "棒球打擊紀錄:\n";
+      existingData.forEach(row => {
+        content += row.join(", ") + "\n";
+      });
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      saveAs(blob, "棒球打擊紀錄.txt");
     }
 
     function saveXlsx() {
