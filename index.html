@@ -53,6 +53,14 @@
     .input-section {
       margin-bottom: 20px;
     }
+    .button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .button-container button {
+      margin: 0 10px;
+    }
   </style>
 </head>
 <body>
@@ -94,6 +102,7 @@
     <input type="number" id="sb" placeholder="請輸入盜壘成功次數">
     <label for="cs">盜壘失敗次數 (CS):</label>
     <input type="number" id="cs" placeholder="請輸入盜壘失敗次數">
+
     <h3>打席結果</h3>
 
     <!-- 第一至第六打席結果 -->
@@ -211,7 +220,12 @@
       <input type="number" id="sb6" placeholder="請輸入盜壘次數">
     </div>
 
-    <button onclick="calculateStats()">計算統計</button>
+    <div class="button-container">
+      <button onclick="calculateStats()">計算統計</button>
+      <button onclick="clearFields()">清除</button>
+      <button onclick="exportToJPG()">匯出.JPG</button>
+      <button onclick="exportToExcel()">匯出EXCEL</button>
+    </div>
   </div>
 
   <div class="result-box" id="output">
@@ -219,69 +233,61 @@
   </div>
 
   <script>
+    // 計算統計的功能
     function calculateStats() {
-      const pa = parseInt(document.getElementById('pa').value) || 0;
       const ab = parseInt(document.getElementById('ab').value) || 0;
       const h = parseInt(document.getElementById('h').value) || 0;
       const bb = parseInt(document.getElementById('bb').value) || 0;
       const so = parseInt(document.getElementById('so').value) || 0;
-      const hbp = parseInt(document.getElementById('hbp').value) || 0;
-      const e = parseInt(document.getElementById('e').value) || 0;
       const rbi = parseInt(document.getElementById('rbi').value) || 0;
-      const single = parseInt(document.getElementById('single').value) || 0;
-      const double = parseInt(document.getElementById('double').value) || 0;
-      const triple = parseInt(document.getElementById('triple').value) || 0;
-      const hr = parseInt(document.getElementById('hr').value) || 0;
       const sb = parseInt(document.getElementById('sb').value) || 0;
-      const cs = parseInt(document.getElementById('cs').value) || 0;
-
-      // 打席結果
-      const atBats = [
-        document.getElementById('atBat1').value,
-        document.getElementById('atBat2').value,
-        document.getElementById('atBat3').value,
-        document.getElementById('atBat4').value,
-        document.getElementById('atBat5').value,
-        document.getElementById('atBat6').value
-      ];
-
-      const rb1 = parseInt(document.getElementById('rbi1').value) || 0;
-      const rb2 = parseInt(document.getElementById('rbi2').value) || 0;
-      const rb3 = parseInt(document.getElementById('rbi3').value) || 0;
-      const rb4 = parseInt(document.getElementById('rbi4').value) || 0;
-      const rb5 = parseInt(document.getElementById('rbi5').value) || 0;
-      const rb6 = parseInt(document.getElementById('rbi6').value) || 0;
-
+      const atBat1 = document.getElementById('atBat1').value;
+      const rbi1 = parseInt(document.getElementById('rbi1').value) || 0;
       const sb1 = parseInt(document.getElementById('sb1').value) || 0;
+      const atBat2 = document.getElementById('atBat2').value;
+      const rbi2 = parseInt(document.getElementById('rbi2').value) || 0;
       const sb2 = parseInt(document.getElementById('sb2').value) || 0;
-      const sb3 = parseInt(document.getElementById('sb3').value) || 0;
-      const sb4 = parseInt(document.getElementById('sb4').value) || 0;
-      const sb5 = parseInt(document.getElementById('sb5').value) || 0;
-      const sb6 = parseInt(document.getElementById('sb6').value) || 0;
 
-      // 顯示每個打席的結果
-      let atBatResults = '';
-      for (let i = 0; i < atBats.length; i++) {
-        atBatResults += `打席${i + 1}結果: ${atBats[i]}<br>`;
-      }
+      // 計算打擊率、上壘率
+      const ba = (h / ab).toFixed(3);
+      const obp = ((h + bb) / (ab + bb + so)).toFixed(3);
 
-      // 計算正確的長打率
-      const slg = ((double + (triple * 2) + (hr * 3)) / ab).toFixed(3); // 修正長打率的計算，排除一壘安打
-
-      const ba = (ab > 0) ? (h / ab).toFixed(3) : '0.000';
-      const obp = ((h + bb + hbp) / (pa)).toFixed(3);
-
-      document.getElementById('output').innerHTML = `
-        打擊率 (BA): ${ba}<br>
-        上壘率 (OBP): ${obp}<br>
-        長打率 (SLG): ${slg}<br>
-        盜壘成功率: ${(sb / (sb + cs) * 100).toFixed(2)}%<br>
-        打點 (RBI): ${rbi}<br>
-        失誤 (E): ${e}<br>
-        ${atBatResults}<br>
-        打點總數: ${rb1 + rb2 + rb3 + rb4 + rb5 + rb6}<br>
-        盜壘總數: ${sb1 + sb2 + sb3 + sb4 + sb5 + sb6}
+      // 顯示計算結果
+      const output = `
+        <h3>計算結果:</h3>
+        <p>打擊率 (BA): ${ba}</p>
+        <p>上壘率 (OBP): ${obp}</p>
+        <p>打點數 (RBI): ${rbi + rbi1 + rbi2}</p>
+        <p>盜壘數 (SB): ${sb + sb1 + sb2}</p>
       `;
+      document.getElementById('output').innerHTML = output;
+    }
+
+    // 清除所有欄位
+    function clearFields() {
+      const inputs = document.querySelectorAll('input');
+      inputs.forEach(input => input.value = '');
+      document.getElementById('output').innerHTML = '';
+    }
+
+    // 匯出結果為JPG
+    function exportToJPG() {
+      html2canvas(document.getElementById('output')).then(function(canvas) {
+        canvas.toBlob(function(blob) {
+          saveAs(blob, 'statistics.jpg');
+        });
+      });
+    }
+
+    // 匯出結果為Excel
+    function exportToExcel() {
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet([
+        ["打擊率", "上壘率", "打點數", "盜壘數"],
+        [document.getElementById('output').innerText]
+      ]);
+      XLSX.utils.book_append_sheet(wb, ws, "統計");
+      XLSX.writeFile(wb, "statistics.xlsx");
     }
   </script>
 </body>
