@@ -225,119 +225,64 @@
       <button onclick="clearFields()">清除</button>
     </div>
 
-    <div class="result-box">
-      <h3>計算結果</h3>
-      <p>打擊率 (BA): <span id="battingAverage">0.000</span></p>
-      <p>上壘率 (OBP): <span id="onBasePercentage">0.000</span></p>
-      <p>長打率 (SLG): <span id="sluggingPercentage">0.000</span></p>
-      <p>盜壘成功率 (SB%): <span id="sbPercentage">0.000</span></p>
-      <p>打點數 (RBI): <span id="rbiTotal">0</span></p>
-      <p>安打數 (H): <span id="hits">0</span></p>
-      <p>盜壘數 (SB): <span id="steals">0</span></p>
-      <p>打點總數 (RBI Total): <span id="totalRbi">0</span></p>
-      <p>盜壘總數 (SB Total): <span id="totalSb">0</span></p>
+    <div class="result-box" id="results">
+      <h3>統計結果</h3>
+      <div id="statistics"></div>
     </div>
 
-    <div class="button-container">
-      <button onclick="exportToJPG()">匯出.JPG</button>
-      <button onclick="exportToExcel()">匯出.EXCEL</button>
-    </div>
   </div>
 
   <script>
-    // Function to calculate stats
     function calculateStats() {
-      var pa = parseInt(document.getElementById('pa').value);
-      var ab = parseInt(document.getElementById('ab').value);
-      var h = parseInt(document.getElementById('h').value);
-      var bb = parseInt(document.getElementById('bb').value);
-      var so = parseInt(document.getElementById('so').value);
-      var hbp = parseInt(document.getElementById('hbp').value);
-      var e = parseInt(document.getElementById('e').value);
-      var rbi = parseInt(document.getElementById('rbi').value);
-      var single = parseInt(document.getElementById('single').value);
-      var double = parseInt(document.getElementById('double').value);
-      var triple = parseInt(document.getElementById('triple').value);
-      var hr = parseInt(document.getElementById('hr').value);
-      var sb = parseInt(document.getElementById('sb').value);
-      var cs = parseInt(document.getElementById('cs').value);
+      const date = document.getElementById('date').value;
+      const name = document.getElementById('name').value;
+      const battingOrder = document.getElementById('battingOrder').value;
+      const position = document.getElementById('position').value;
+      const pa = Number(document.getElementById('pa').value);
+      const ab = Number(document.getElementById('ab').value);
+      const h = Number(document.getElementById('h').value);
+      const bb = Number(document.getElementById('bb').value);
+      const so = Number(document.getElementById('so').value);
+      const hbp = Number(document.getElementById('hbp').value);
+      const e = Number(document.getElementById('e').value);
+      const rbi = Number(document.getElementById('rbi').value);
+      const single = Number(document.getElementById('single').value);
+      const double = Number(document.getElementById('double').value);
+      const triple = Number(document.getElementById('triple').value);
+      const hr = Number(document.getElementById('hr').value);
+      const sb = Number(document.getElementById('sb').value);
+      const cs = Number(document.getElementById('cs').value);
 
-      // Calculate statistics
-      var ba = (ab && h) ? (h / ab).toFixed(3) : 0.000;
-      var obp = ((ab + bb + hbp) && (h + bb + hbp)) ? ((h + bb + hbp) / (ab + bb + hbp)).toFixed(3) : 0.000;
-      var slg = ((double + triple + hr) && ab) ? ((double * 2 + triple * 3 + hr * 4) / ab).toFixed(3) : 0.000;
-      var sbPercentage = (sb + cs) ? (sb / (sb + cs)).toFixed(3) : 0.000;
+      // 計算統計
+      const ba = h / ab;
+      const obp = (h + bb + hbp) / (ab + bb + hbp);
+      const slg = (double * 2 + triple * 3 + hr * 4) / ab;
+      const sbPercentage = sb / (sb + cs);
 
-      // Display results
-      document.getElementById('battingAverage').innerText = ba;
-      document.getElementById('onBasePercentage').innerText = obp;
-      document.getElementById('sluggingPercentage').innerText = slg;
-      document.getElementById('sbPercentage').innerText = sbPercentage;
-      document.getElementById('rbiTotal').innerText = rbi;
-      document.getElementById('hits').innerText = h;
-      document.getElementById('steals').innerText = sb;
-      document.getElementById('totalRbi').innerText = rbi;
-      document.getElementById('totalSb').innerText = sb;
+      // 顯示結果
+      const resultsBox = document.getElementById('statistics');
+      resultsBox.innerHTML = `
+        <p>日期: ${date}</p>
+        <p>姓名: ${name}</p>
+        <p>棒次: ${battingOrder}</p>
+        <p>守備位置: ${position}</p>
+        <p>打席數 (PA): ${pa}</p>
+        <p>打數 (AB): ${ab}</p>
+        <p>安打數 (H): ${h}</p>
+        <p>打擊率 (BA): ${ba.toFixed(3)}</p>
+        <p>上壘率 (OBP): ${obp.toFixed(3)}</p>
+        <p>長打率 (SLG): ${slg.toFixed(3)}</p>
+        <p>盜壘成功率 (SB%): ${(sbPercentage * 100).toFixed(2)}%</p>
+        <p>打點數 (RBI): ${rbi}</p>
+        <p>失誤數 (E): ${e}</p>
+      `;
     }
 
-    // Function to clear fields
     function clearFields() {
-      document.getElementById('date').value = '';
-      document.getElementById('name').value = '';
-      document.getElementById('battingOrder').value = '';
-      document.getElementById('position').value = '';
-      document.getElementById('pa').value = '';
-      document.getElementById('ab').value = '';
-      document.getElementById('h').value = '';
-      document.getElementById('bb').value = '';
-      document.getElementById('so').value = '';
-      document.getElementById('hbp').value = '';
-      document.getElementById('e').value = '';
-      document.getElementById('rbi').value = '';
-      document.getElementById('single').value = '';
-      document.getElementById('double').value = '';
-      document.getElementById('triple').value = '';
-      document.getElementById('hr').value = '';
-      document.getElementById('sb').value = '';
-      document.getElementById('cs').value = '';
-      document.getElementById('battingAverage').innerText = '0.000';
-      document.getElementById('onBasePercentage').innerText = '0.000';
-      document.getElementById('sluggingPercentage').innerText = '0.000';
-      document.getElementById('sbPercentage').innerText = '0.000';
-      document.getElementById('rbiTotal').innerText = '0';
-      document.getElementById('hits').innerText = '0';
-      document.getElementById('steals').innerText = '0';
-      document.getElementById('totalRbi').innerText = '0';
-      document.getElementById('totalSb').innerText = '0';
-    }
-
-    // Function to export to JPG
-    function exportToJPG() {
-      html2canvas(document.querySelector(".result-box")).then(canvas => {
-        canvas.toBlob(function(blob) {
-          saveAs(blob, "打擊紀錄.jpg");
-        });
+      document.querySelectorAll('input[type="number"], input[type="text"], input[type="date"]').forEach(input => {
+        input.value = '';
       });
-    }
-
-    // Function to export to Excel
-    function exportToExcel() {
-      var wb = XLSX.utils.book_new();
-      var ws = XLSX.utils.json_to_sheet([{
-        "姓名": document.getElementById('name').value,
-        "日期": document.getElementById('date').value,
-        "打擊率 (BA)": document.getElementById('battingAverage').innerText,
-        "上壘率 (OBP)": document.getElementById('onBasePercentage').innerText,
-        "長打率 (SLG)": document.getElementById('sluggingPercentage').innerText,
-        "盜壘成功率 (SB%)": document.getElementById('sbPercentage').innerText,
-        "打點數 (RBI)": document.getElementById('rbiTotal').innerText,
-        "安打數 (H)": document.getElementById('hits').innerText,
-        "盜壘數 (SB)": document.getElementById('steals').innerText,
-        "打點總數 (RBI Total)": document.getElementById('totalRbi').innerText,
-        "盜壘總數 (SB Total)": document.getElementById('totalSb').innerText
-      }]);
-      XLSX.utils.book_append_sheet(wb, ws, "打擊紀錄");
-      XLSX.writeFile(wb, "打擊紀錄.xlsx");
+      document.getElementById('statistics').innerHTML = '';
     }
   </script>
 </body>
