@@ -115,11 +115,15 @@
       <!-- 第一打席 -->
       <label for="atBat1">第一打席:</label>
       <select id="atBat1">
-        <option value="安打">安打</option>
+        <option value="一壘安打">一壘安打</option>
+        <option value="二壘安打">二壘安打</option>
+        <option value="三壘安打">三壘安打</option>
+        <option value="全壘打">全壘打</option>
         <option value="四壞球">四壞球</option>
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
+        <option value="無此打席">無此打席</option>
       </select>
       <label for="atBat1RBI">是否有打點:</label>
       <input type="checkbox" id="atBat1RBI">
@@ -131,11 +135,15 @@
       <!-- 第二打席 -->
       <label for="atBat2">第二打席:</label>
       <select id="atBat2">
-        <option value="安打">安打</option>
+        <option value="一壘安打">一壘安打</option>
+        <option value="二壘安打">二壘安打</option>
+        <option value="三壘安打">三壘安打</option>
+        <option value="全壘打">全壘打</option>
         <option value="四壞球">四壞球</option>
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
+        <option value="無此打席">無此打席</option>
       </select>
       <label for="atBat2RBI">是否有打點:</label>
       <input type="checkbox" id="atBat2RBI">
@@ -147,11 +155,15 @@
       <!-- 第三打席 -->
       <label for="atBat3">第三打席:</label>
       <select id="atBat3">
-        <option value="安打">安打</option>
+        <option value="一壘安打">一壘安打</option>
+        <option value="二壘安打">二壘安打</option>
+        <option value="三壘安打">三壘安打</option>
+        <option value="全壘打">全壘打</option>
         <option value="四壞球">四壞球</option>
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
+        <option value="無此打席">無此打席</option>
       </select>
       <label for="atBat3RBI">是否有打點:</label>
       <input type="checkbox" id="atBat3RBI">
@@ -163,11 +175,15 @@
       <!-- 第四打席 -->
       <label for="atBat4">第四打席:</label>
       <select id="atBat4">
-        <option value="安打">安打</option>
+        <option value="一壘安打">一壘安打</option>
+        <option value="二壘安打">二壘安打</option>
+        <option value="三壘安打">三壘安打</option>
+        <option value="全壘打">全壘打</option>
         <option value="四壞球">四壞球</option>
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
+        <option value="無此打席">無此打席</option>
       </select>
       <label for="atBat4RBI">是否有打點:</label>
       <input type="checkbox" id="atBat4RBI">
@@ -179,11 +195,15 @@
       <!-- 第五打席 -->
       <label for="atBat5">第五打席:</label>
       <select id="atBat5">
-        <option value="安打">安打</option>
+        <option value="一壘安打">一壘安打</option>
+        <option value="二壘安打">二壘安打</option>
+        <option value="三壘安打">三壘安打</option>
+        <option value="全壘打">全壘打</option>
         <option value="四壞球">四壞球</option>
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
+        <option value="無此打席">無此打席</option>
       </select>
       <label for="atBat5RBI">是否有打點:</label>
       <input type="checkbox" id="atBat5RBI">
@@ -195,11 +215,15 @@
       <!-- 第六打席 -->
       <label for="atBat6">第六打席:</label>
       <select id="atBat6">
-        <option value="安打">安打</option>
+        <option value="一壘安打">一壘安打</option>
+        <option value="二壘安打">二壘安打</option>
+        <option value="三壘安打">三壘安打</option>
+        <option value="全壘打">全壘打</option>
         <option value="四壞球">四壞球</option>
         <option value="觸身球">觸身球</option>
         <option value="三振">三振</option>
         <option value="失誤">失誤</option>
+        <option value="無此打席">無此打席</option>
       </select>
       <label for="atBat6RBI">是否有打點:</label>
       <input type="checkbox" id="atBat6RBI">
@@ -208,9 +232,9 @@
       <input type="checkbox" id="atBat6SB">
       <input type="number" id="atBat6SBValue" style="display:none;" placeholder="盜壘次數">
     </div>
-    
+
     <button onclick="calculateStats()">計算統計</button>
-    <button onclick="clearFields()">清除輸入框</button>
+    <button onclick="clearFields()">清除</button>
     <button onclick="saveAsJpg()">儲存成圖片 (JPG)</button>
     <button onclick="saveAsTxt()">儲存成記事本 (TXT)</button>
     <button onclick="saveAsExcel()">儲存成Excel (XLSX)</button>
@@ -251,6 +275,22 @@
       const sb = parseInt(document.getElementById('sb').value) || 0;
       const cs = parseInt(document.getElementById('cs').value) || 0;
 
+      // 打席結果
+      const atBats = [
+        document.getElementById('atBat1').value,
+        document.getElementById('atBat2').value,
+        document.getElementById('atBat3').value,
+        document.getElementById('atBat4').value,
+        document.getElementById('atBat5').value,
+        document.getElementById('atBat6').value
+      ];
+
+      // 顯示每個打席的結果
+      let atBatResults = '';
+      for (let i = 0; i < atBats.length; i++) {
+        atBatResults += `打席${i + 1}結果: ${atBats[i]}<br>`;
+      }
+
       const ba = (ab > 0) ? (h / ab).toFixed(3) : '0.000';
       const obp = ((h + bb + hbp) / (pa)).toFixed(3);
       const slg = ((single + (double * 2) + (triple * 3) + (hr * 4)) / ab).toFixed(3);
@@ -261,7 +301,8 @@
         長打率 (SLG): ${slg}<br>
         盜壘成功率: ${(sb / (sb + cs) * 100).toFixed(2)}%<br>
         打點 (RBI): ${rbi}<br>
-        失誤 (E): ${e}
+        失誤 (E): ${e}<br>
+        ${atBatResults}
       `;
     }
 
@@ -281,25 +322,25 @@
       });
     }
 
-    // 儲存為記事本
+    // 儲存為TXT
     function saveAsTxt() {
-      const text = document.getElementById('output').innerText;
-      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const outputText = document.getElementById("output").innerText;
+      const blob = new Blob([outputText], { type: "text/plain" });
       saveAs(blob, "result.txt");
     }
 
     // 儲存為Excel
     function saveAsExcel() {
       const wb = XLSX.utils.book_new();
-      const ws_data = [
-        ['日期', '姓名', '棒次', '守備位置', '打席數 (PA)', '打數 (AB)', '安打數 (H)', '四壞球數 (BB)', '三振數 (SO)', '觸身球數 (HBP)', '失誤數 (E)', '打點數 (RBI)', '1壘安打 (1B)', '2壘安打 (2B)', '3壘安打 (3B)', '全壘打 (HR)', '盜壘成功次數 (SB)', '盜壘失敗次數 (CS)'],
-        [document.getElementById('date').value, document.getElementById('name').value, document.getElementById('battingOrder').value, document.getElementById('position').value, document.getElementById('pa').value, document.getElementById('ab').value, document.getElementById('h').value, document.getElementById('bb').value, document.getElementById('so').value, document.getElementById('hbp').value, document.getElementById('e').value, document.getElementById('rbi').value, document.getElementById('single').value, document.getElementById('double').value, document.getElementById('triple').value, document.getElementById('hr').value, document.getElementById('sb').value, document.getElementById('cs').value]
-      ];
-
-      const ws = XLSX.utils.aoa_to_sheet(ws_data);
-      XLSX.utils.book_append_sheet(wb, ws, "棒球統計");
-
-      // 儲存為Excel
+      const ws = XLSX.utils.aoa_to_sheet([
+        ["姓名", "日期", "棒次", "打席數", "打數", "安打", "四壞球", "三振", "觸身球", "失誤", "打點", "1壘安打", "2壘安打", "3壘安打", "全壘打", "盜壘成功", "盜壘失敗"],
+        [document.getElementById('name').value, document.getElementById('date').value, document.getElementById('battingOrder').value,
+          document.getElementById('pa').value, document.getElementById('ab').value, document.getElementById('h').value, document.getElementById('bb').value,
+          document.getElementById('so').value, document.getElementById('hbp').value, document.getElementById('e').value,
+          document.getElementById('rbi').value, document.getElementById('single').value, document.getElementById('double').value,
+          document.getElementById('triple').value, document.getElementById('hr').value, document.getElementById('sb').value, document.getElementById('cs').value]
+      ]);
+      XLSX.utils.book_append_sheet(wb, ws, "打擊紀錄");
       XLSX.writeFile(wb, "result.xlsx");
     }
   </script>
