@@ -256,33 +256,51 @@
       const currentDate = new Date();
       const formattedDate = currentDate.toLocaleString();
 
-      document.getElementById('resultContent').innerHTML = `
-        日期: ${date}<br><br>
-        姓名: ${name}<br>
-        棒次: ${battingOrder}<br>
-        守備位置: ${position}<br>
-        打席數 (PA): ${pa}<br>
-        打數 (AB): ${ab}<br>
-        安打數 (H): ${h}<br>
-        四壞球數 (BB): ${bb}<br>
-        三振數 (SO): ${so}<br>
-        觸身球數 (HBP): ${hbp}<br>
-        失誤數 (E): ${e}<br>
-        打點數 (RBI): ${rbi}<br>
-        1壘安打 (1B): ${single}<br>
-        2壘安打 (2B): ${double}<br>
-        3壘安打 (3B): ${triple}<br>
-        全壘打 (HR): ${hr}<br>
-        盜壘成功次數 (SB): ${sb}<br>
-        盜壘失敗次數 (CS): ${cs}<br><br>
-        打擊率 (BA): ${ba}<br>
-        上壘率 (OBP): ${obp}<br>
-        盜壘成功率 (SB%): ${sbPercent}<br>
-        長打率 (SLG): ${slg}
-      `;
+   const batResults = [];
+   for (let i = 1; i <= 6; i++) {
+    const atBat = document.getElementById(`atBat${i}`).value || "無此打席";
+    const rbiAtBat = parseFloat(document.getElementById(`rbi${i}`).value) || 0;
+    const sbAtBat = parseFloat(document.getElementById(`sb${i}`).value) || 0;
+    batResults.push({ atBat, rbi: rbiAtBat, sb: sbAtBat });
+}
+// 組合結果
+  let batDetails = "";
+  batResults.forEach((result, index) => {
+    batDetails += `
+      第${index + 1}打席: ${result.atBat}，打點: ${result.rbi}，盜壘: ${result.sb}<br>`;
+  });
 
-      existingData.push([date, name, battingOrder, position, pa, ab, h, bb, so, hbp, e, rbi, single, double, triple, hr, sb, cs, ba, obp, sbPercent, slg, formattedDate]);
-    }
+
+      document.getElementById('resultContent').innerHTML = `
+    日期: ${date}<br><br>
+    姓名: ${name}<br>
+    棒次: ${battingOrder}<br>
+    守備位置: ${position}<br>
+    打席數 (PA): ${pa}<br>
+    打數 (AB): ${ab}<br>
+    安打數 (H): ${h}<br>
+    四壞球數 (BB): ${bb}<br>
+    三振數 (SO): ${so}<br>
+    觸身球數 (HBP): ${hbp}<br>
+    失誤數 (E): ${e}<br>
+    打點數 (RBI): ${rbi}<br>
+    1壘安打 (1B): ${single}<br>
+    2壘安打 (2B): ${double}<br>
+    3壘安打 (3B): ${triple}<br>
+    全壘打 (HR): ${hr}<br>
+    盜壘成功次數 (SB): ${sb}<br>
+    盜壘失敗次數 (CS): ${cs}<br><br>
+    打擊率 (BA): ${ba}<br>
+    上壘率 (OBP): ${obp}<br>
+    盜壘成功率 (SB%): ${sbPercent}<br>
+    長打率 (SLG): ${slg}<br><br>
+    打席詳細數據:<br>
+    ${batDetails}
+  `;
+
+      // 保存數據到 existingData
+  existingData.push([date, name, battingOrder, position, pa, ab, h, bb, so, hbp, e, rbi, single, double, triple, hr, sb, cs, ba, obp, sbPercent, slg, batResults]);
+}
 
     function clearFields() {
       document.querySelectorAll('input').forEach(input => input.value = '');
