@@ -223,6 +223,8 @@
     <div class="button-container">
       <button onclick="calculateStats()">計算統計</button>
       <button onclick="clearFields()">清除</button>
+      <button onclick="exportToJPG()">匯出.JPG</button>
+      <button onclick="exportToExcel()">匯出.EXCEL</button>
     </div>
 
     <div class="result-box" id="results">
@@ -273,8 +275,6 @@
         <p>上壘率 (OBP): ${obp.toFixed(3)}</p>
         <p>長打率 (SLG): ${slg.toFixed(3)}</p>
         <p>盜壘成功率 (SB%): ${(sbPercentage * 100).toFixed(2)}%</p>
-        <p>打點數 (RBI): ${rbi}</p>
-        <p>失誤數 (E): ${e}</p>
       `;
     }
 
@@ -284,6 +284,29 @@
       });
       document.getElementById('statistics').innerHTML = '';
     }
+
+    function exportToJPG() {
+      const resultsBox = document.getElementById('results');
+      html2canvas(resultsBox).then(canvas => {
+        canvas.toBlob(blob => {
+          saveAs(blob, '打擊紀錄.jpg');
+        });
+      });
+    }
+
+    function exportToExcel() {
+      const data = [
+        ['日期', '姓名', '棒次', '守備位置', '打席數 (PA)', '打數 (AB)', '安打數 (H)', '打擊率 (BA)', '上壘率 (OBP)', '長打率 (SLG)', '盜壘成功率 (SB%)'],
+        // Example data row. Replace with real data dynamically
+        ['2025-01-08', '王大明', '3', '一壘手', '5', '4', '2', '0.500', '0.600', '0.750', '100%', '3', '1']
+      ];
+
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, '打擊紀錄');
+      XLSX.writeFile(wb, '打擊紀錄.xlsx');
+    }
   </script>
 </body>
 </html>
+
