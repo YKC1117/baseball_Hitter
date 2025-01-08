@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>棒球打擊紀錄</title>
+  <title>棒球統計計算器</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -50,21 +50,15 @@
       border-radius: 5px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .input-section {
-      margin-bottom: 20px;
-    }
-    .button-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .button-container button {
-      margin: 0 10px;
+    @media (max-width: 600px) {
+      input[type="number"], input[type="text"], button {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>棒球打擊紀錄</h1>
+  <h1>棒球統計計算器</h1>
   <div>
     <label for="date">日期:</label>
     <input type="date" id="date">
@@ -103,9 +97,9 @@
     <label for="cs">盜壘失敗次數 (CS):</label>
     <input type="number" id="cs" placeholder="請輸入盜壘失敗次數">
 
-    <h3>打席結果</h3>
+<br><br>
 
-    <!-- 第一至第六打席結果 -->
+  <!-- 第一至第六打席結果 -->
     <div class="input-section">
       <label for="atBat1">第一打席結果:</label>
       <select id="atBat1">
@@ -218,95 +212,119 @@
       <input type="number" id="rbi6" placeholder="請輸入打點數">
       <label for="sb6">盜壘:</label>
       <input type="number" id="sb6" placeholder="請輸入盜壘次數">
-    </div>
 
-    <div class="button-container">
-      <button onclick="calculateStats()">計算統計</button>
-      <button onclick="clearFields()">清除</button>
-      <button onclick="exportToJPG()">匯出.JPG</button>
-      <button onclick="exportToExcel()">匯出.EXCEL</button>
-    </div>
-
-    <div class="result-box" id="results">
-      <h3>統計結果</h3>
-      <div id="statistics"></div>
-    </div>
-
+  </div>
+<br>
+    <button onclick="calculateStats()">計算統計</button>
+    <button onclick="clearFields()">清除輸入框</button>
+    <button onclick="saveImage()">儲存為圖片</button>
+    <button onclick="saveLog()">儲存為LOG檔</button>
+    <button id="saveButton" onclick="saveXlsx()">儲存為XLSX檔</button>
+  <div id="result" class="result-box">
+    <h3>計算結果:</h3>
+    <div id="resultContent">尚未計算結果</div>
   </div>
 
   <script>
+    let existingData = [];
+
     function calculateStats() {
       const date = document.getElementById('date').value;
-      const name = document.getElementById('name').value;
-      const battingOrder = document.getElementById('battingOrder').value;
-      const position = document.getElementById('position').value;
-      const pa = Number(document.getElementById('pa').value);
-      const ab = Number(document.getElementById('ab').value);
-      const h = Number(document.getElementById('h').value);
-      const bb = Number(document.getElementById('bb').value);
-      const so = Number(document.getElementById('so').value);
-      const hbp = Number(document.getElementById('hbp').value);
-      const e = Number(document.getElementById('e').value);
-      const rbi = Number(document.getElementById('rbi').value);
-      const single = Number(document.getElementById('single').value);
-      const double = Number(document.getElementById('double').value);
-      const triple = Number(document.getElementById('triple').value);
-      const hr = Number(document.getElementById('hr').value);
-      const sb = Number(document.getElementById('sb').value);
-      const cs = Number(document.getElementById('cs').value);
+      const name = document.getElementById('name').value || "未輸入";
+      const battingOrder = document.getElementById('battingOrder').value || "未輸入";
+      const position = document.getElementById('position').value || "未輸入";
+      const pa = parseFloat(document.getElementById('pa').value) || 0;
+      const ab = parseFloat(document.getElementById('ab').value) || 0;
+      const h = parseFloat(document.getElementById('h').value) || 0;
+      const bb = parseFloat(document.getElementById('bb').value) || 0;
+      const so = parseFloat(document.getElementById('so').value) || 0;
+      const hbp = parseFloat(document.getElementById('hbp').value) || 0;
+      const e = parseFloat(document.getElementById('e').value) || 0;
+      const rbi = parseFloat(document.getElementById('rbi').value) || 0;
+      const single = parseFloat(document.getElementById('single').value) || 0;
+      const double = parseFloat(document.getElementById('double').value) || 0;
+      const triple = parseFloat(document.getElementById('triple').value) || 0;
+      const hr = parseFloat(document.getElementById('hr').value) || 0;
+      const sb = parseFloat(document.getElementById('sb').value) || 0;
+      const cs = parseFloat(document.getElementById('cs').value) || 0;
 
-      // 計算統計
-      const ba = h / ab;
-      const obp = (h + bb + hbp) / (ab + bb + hbp);
-      const slg = (double * 2 + triple * 3 + hr * 4) / ab;
-      const sbPercentage = sb / (sb + cs);
+      const ba = ab ? (h / ab).toFixed(3) : "0.000";
+      const obp = ab + bb + hbp ? ((h + bb + hbp) / (ab + bb + hbp)).toFixed(4) : "0.0000";
+      const sbPercent = sb + cs ? (sb / (sb + cs)).toFixed(3) : "0.000";
+      const slg = (double + triple + hr) / ab ? ((double + triple + hr) / ab).toFixed(3) : "0.000";  // 長打率計算
 
-      // 顯示結果
-      const resultsBox = document.getElementById('statistics');
-      resultsBox.innerHTML = `
-        <p>日期: ${date}</p>
-        <p>姓名: ${name}</p>
-        <p>棒次: ${battingOrder}</p>
-        <p>守備位置: ${position}</p>
-        <p>打席數 (PA): ${pa}</p>
-        <p>打數 (AB): ${ab}</p>
-        <p>安打數 (H): ${h}</p>
-        <p>打擊率 (BA): ${ba.toFixed(3)}</p>
-        <p>上壘率 (OBP): ${obp.toFixed(3)}</p>
-        <p>長打率 (SLG): ${slg.toFixed(3)}</p>
-        <p>盜壘成功率 (SB%): ${(sbPercentage * 100).toFixed(2)}%</p>
+      const currentDate = new Date();
+      const formattedDate = currentDate.toLocaleString();
+
+      document.getElementById('resultContent').innerHTML = `
+        日期: ${date}<br><br>
+        姓名: ${name}<br>
+        棒次: ${battingOrder}<br>
+        守備位置: ${position}<br>
+        打席數 (PA): ${pa}<br>
+        打數 (AB): ${ab}<br>
+        安打數 (H): ${h}<br>
+        四壞球數 (BB): ${bb}<br>
+        三振數 (SO): ${so}<br>
+        觸身球數 (HBP): ${hbp}<br>
+        失誤數 (E): ${e}<br>
+        打點數 (RBI): ${rbi}<br>
+        1壘安打 (1B): ${single}<br>
+        2壘安打 (2B): ${double}<br>
+        3壘安打 (3B): ${triple}<br>
+        全壘打 (HR): ${hr}<br>
+        盜壘成功次數 (SB): ${sb}<br>
+        盜壘失敗次數 (CS): ${cs}<br><br>
+        打擊率 (BA): ${ba}<br>
+        上壘率 (OBP): ${obp}<br>
+        盜壘成功率 (SB%): ${sbPercent}<br>
+        長打率 (SLG): ${slg}
       `;
+
+      existingData.push([date, name, battingOrder, position, pa, ab, h, bb, so, hbp, e, rbi, single, double, triple, hr, sb, cs, ba, obp, sbPercent, slg, formattedDate]);
     }
 
     function clearFields() {
-      document.querySelectorAll('input[type="number"], input[type="text"], input[type="date"]').forEach(input => {
-        input.value = '';
-      });
-      document.getElementById('statistics').innerHTML = '';
+      document.querySelectorAll('input').forEach(input => input.value = '');
+      document.getElementById('resultContent').innerHTML = '尚未計算結果';
     }
 
-    function exportToJPG() {
-      const resultsBox = document.getElementById('results');
-      html2canvas(resultsBox).then(canvas => {
-        canvas.toBlob(blob => {
-          saveAs(blob, '打擊紀錄.jpg');
+    function saveXlsx() {
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet([[ "日期", "姓名", "棒次", "守備位置", "打席數 (PA)", "打數 (AB)", "安打數 (H)", "四壞球數 (BB)", "三振數 (SO)", "觸身球數 (HBP)", "失誤數 (E)", "打點數 (RBI)", "1壘安打 (1B)", "2壘安打 (2B)", "3壘安打 (3B)", "全壘打 (HR)", "盜壘成功次數 (SB)", "盜壘失敗次數 (CS)", "打擊率 (BA)", "上壘率 (OBP)", "盜壘成功率 (SB%)", "長打率 (SLG)"]]);
+      existingData.forEach(row => {
+        XLSX.utils.sheet_add_aoa(ws, [row], { origin: -1 });
+      });
+      XLSX.utils.book_append_sheet(wb, ws, "棒球統計");
+
+      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([wbout], { type: "application/octet-stream" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '棒球統計結果.xlsx';
+      a.click();
+      URL.revokeObjectURL(url);  // 釋放URL
+    }
+
+    function saveImage() {
+      html2canvas(document.getElementById('result')).then(function(canvas) {
+        canvas.toBlob(function(blob) {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = '棒球統計結果.jpg';
+          a.click();
+          URL.revokeObjectURL(url);
         });
       });
     }
 
-    function exportToExcel() {
-      const data = [
-        ['日期', '姓名', '棒次', '守備位置', '打席數 (PA)', '打數 (AB)', '安打數 (H)', '打擊率 (BA)', '上壘率 (OBP)', '長打率 (SLG)', '盜壘成功率 (SB%)'],
-        // Example data row. Replace with real data dynamically
-        ['2025-01-08', '王大明', '3', '一壘手', '5', '4', '2', '0.500', '0.600', '0.750', '100%', '3', '1']
-      ];
-
-      const ws = XLSX.utils.aoa_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, '打擊紀錄');
-      XLSX.writeFile(wb, '打擊紀錄.xlsx');
+    function saveLog() {
+      const logData = existingData.map(row => row.join('\t')).join('\n');
+      const blob = new Blob([logData], { type: "text/plain;charset=utf-8" });
+      saveAs(blob, '棒球統計結果.txt');
     }
   </script>
 </body>
 </html>
-
